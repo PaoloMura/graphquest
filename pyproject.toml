@@ -9,7 +9,7 @@ authors = [
   { name="Paolo Mura", email="paolo@muraonline.com" },
 ]
 description = "A small package for creating question generators for use in the Graph Quest website."
-readme = "README.md"
+readme = "README.rst"
 requires-python = ">=3.11"
 classifiers = [
     "Programming Language :: Python :: 3",
