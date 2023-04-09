@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "graphquest"
+version = "0.0.1"
+authors = [
+  { name="Paolo Mura", email="paolo@muraonline.com" },
+]
+description = "A small package for creating question generators for use in the Graph Quest website."
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/PaoloMura/graph-quest"
+"Bug Tracker" = "https://github.com/PaoloMura/graph-quest/issues"

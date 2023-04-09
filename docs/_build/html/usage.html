@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usage &mdash; graphquest  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API" href="api.html" />
+    <link rel="prev" title="GraphQuest" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> graphquest
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-questions">Creating questions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#generating-answer-feedback">Generating Answer Feedback</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#question-settings">Question Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#question-lifecycle">Question Lifecycle</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">graphquest</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Usage</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h1>
+<section id="installation">
+<span id="id1"></span><h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
+<p>To use GraphQuest, first install it using pip:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(.venv)</span> <span class="gp">$ </span>pip install graphquest
+</pre></div>
+</div>
+</section>
+<section id="creating-questions">
+<span id="id2"></span><h2>Creating questions<a class="headerlink" href="#creating-questions" title="Permalink to this heading"></a></h2>
+<p>To get started, create a Python file and import the question type.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">from</span> <span class="nn">graphquest.question</span> <span class="kn">import</span> <span class="n">QTextInput</span>
+</pre></div>
+</div>
+<p>Alternatively, import all question types.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">from</span> <span class="nn">graphquest.question</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+<p>Now create a Python class that extends this class and implements its methods.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 2</span><span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="linenos"> 3</span><span class="kn">import</span> <span class="nn">random</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="k">class</span> <span class="nc">MyQuestion</span><span class="p">(</span><span class="n">QTextInput</span><span class="p">):</span>
+<span class="linenos"> 6</span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos"> 7</span>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>    <span class="k">def</span> <span class="nf">generate_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="linenos">10</span>        <span class="n">n</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="linenos">11</span>        <span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">gnp_random_graph</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="linenos">12</span>        <span class="k">return</span> <span class="p">[</span><span class="n">G</span><span class="p">]</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span>    <span class="k">def</span> <span class="nf">generate_question</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graphs</span><span class="p">):</span>
+<span class="linenos">15</span>        <span class="k">return</span> <span class="s1">&#39;How many nodes does this graph have?&#39;</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>    <span class="k">def</span> <span class="nf">generate_solutions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graphs</span><span class="p">):</span>
+<span class="linenos">18</span>        <span class="n">num_nodes</span> <span class="o">=</span> <span class="n">graphs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
+<span class="linenos">19</span>        <span class="k">return</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">num_nodes</span><span class="p">)]</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span>    <span class="k">def</span> <span class="nf">generate_feedback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graphs</span><span class="p">,</span> <span class="n">answer</span><span class="p">):</span>
+<span class="linenos">22</span>        <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;&#39;</span>
+</pre></div>
+</div>
+<p>All question types have four methods you must implement:</p>
+<ul class="simple">
+<li><p><cite>generate_data()</cite> - returns a list of graphs to be displayed</p></li>
+<li><p><cite>generate_question(graphs)</cite> - returns the wording of the question</p></li>
+<li><p><cite>generate_solutions(graphs)</cite> - returns a list of accepted solutions</p></li>
+<li><p><cite>generate_feedback(graphs, answer)</cite> - returns whether the given answer is correct, together with an explanation</p></li>
+</ul>
+</section>
+<section id="generating-answer-feedback">
+<span id="id3"></span><h2>Generating Answer Feedback<a class="headerlink" href="#generating-answer-feedback" title="Permalink to this heading"></a></h2>
+<p>Only one of <cite>generate_solutions()</cite> and <cite>generate_feedback()</cite> should be implemented.</p>
+<p><cite>generate_solutions()</cite> creates a list of accepted solutions before the student is given the question.
+The student’s answer is then compared against this list for verification.</p>
+<p>Alternatively, you can implement the <cite>generate_feedback()</cite> method.
+This waits for the student to answer first, then takes in their answer as a parameter.
+It processes the answer—together with the original graphs used in the question—to verify their answer.
+This provides an opportunity to return an additional feedback string, which could be unique to the student’s answer.</p>
+<p>By default, only <cite>generate_solutions()</cite> is used (see the <a class="reference internal" href="#creating-questions"><span class="std std-ref">example above</span></a>).</p>
+<p>To use the <cite>generate_feedback()</cite> method instead, first specify that you want the <cite>generate_feedback()</cite> method to be used.</p>
+<div class="highlight-python notranslate" id="python-feedback-setting"><div class="highlight"><pre><span></span><span class="linenos">7</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">feedback</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now implement this function and leave <cite>generate_solutions()</cite> as a stub function.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">17</span><span class="k">def</span> <span class="nf">generate_solutions</span><span class="p">(</span><span class="n">graphs</span><span class="p">):</span>
+<span class="linenos">18</span>    <span class="k">return</span> <span class="p">[]</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span><span class="k">def</span> <span class="nf">generate_feedback</span><span class="p">(</span><span class="n">graphs</span><span class="p">,</span> <span class="n">answer</span><span class="p">):</span>
+<span class="linenos">21</span>    <span class="n">num_nodes</span> <span class="o">=</span> <span class="n">graphs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
+<span class="linenos">22</span>    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">answer</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">num_nodes</span><span class="p">:</span>
+<span class="linenos">23</span>        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Too low! The correct answer is </span><span class="si">{</span><span class="n">num_nodes</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="linenos">24</span>    <span class="k">elif</span> <span class="nb">int</span><span class="p">(</span><span class="n">answer</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">num_nodes</span><span class="p">:</span>
+<span class="linenos">25</span>        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Too high! The correct answer is </span><span class="si">{</span><span class="n">num_nodes</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="linenos">26</span>    <span class="k">else</span><span class="p">:</span>
+<span class="linenos">27</span>        <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;&quot;</span>
+</pre></div>
+</div>
+<p>For specific information on the data types that should be used for each question type, see the <a class="reference internal" href="api.html"><span class="doc">API</span></a> section.</p>
+<p>See also the <a class="reference internal" href="#question-lifecycle"><span class="std std-ref">Question Lifecycle</span></a> section.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For the QMultipleChoice question type, the <cite>generate_solutions()</cite> method is always used
+as a way of specifying the options for the answer.
+The <cite>generate_feedback()</cite> method is still optional.</p>
+</div>
+</section>
+<section id="question-settings">
+<h2>Question Settings<a class="headerlink" href="#question-settings" title="Permalink to this heading"></a></h2>
+<p>Constructor arguments are used to specify question settings.</p>
+<p>The <cite>layout</cite> setting determines the layout algorithm used to display the graphs.
+The options are:</p>
+<ul class="simple">
+<li><p><cite>force-directed</cite> (node positions are determined after applying ‘forces’ to them);</p></li>
+<li><p><cite>circle</cite> (nodes are arranged in a clockwise circle in order of their value);</p></li>
+<li><p><cite>grid</cite> (nodes are arranged in a grid);</p></li>
+<li><p><cite>bipartite</cite> (nodes are assigned to one of two columns).</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For bipartite layouts, each node in the graph should be given a <cite>bipartite</cite> attribute set to either <cite>0</cite> or <cite>1</cite>.
+This is done automatically when using bipartite graph generators in networkx.</p>
+</div>
+<p>The <cite>data</cite> setting gives persistent storage.
+It will retain its value when the <cite>generate_feedback()</cite> method is called.
+For more information on its relevance, see the <a class="reference internal" href="#question-lifecycle"><span class="std std-ref">next section</span></a>.</p>
+<p>See the <a class="reference internal" href="#python-feedback-setting"><span class="std std-ref">code above</span></a> for an example with the <cite>feedback</cite> setting.</p>
+<p>See the <a class="reference internal" href="api.html"><span class="doc">API</span></a> section for a list of available settings for each question type.</p>
+</section>
+<section id="question-lifecycle">
+<span id="id4"></span><h2>Question Lifecycle<a class="headerlink" href="#question-lifecycle" title="Permalink to this heading"></a></h2>
+<p>The sequence of events is as follows.</p>
+<ol class="arabic simple">
+<li><p>An object of the question class is instantiated.</p></li>
+<li><p>The <cite>generate_data()</cite> method is called.</p></li>
+<li><p>The <cite>generate_question()</cite> method is called.</p></li>
+<li><p>If the <cite>feedback</cite> setting is <cite>False</cite>, the <cite>generate_solutions()</cite> method is called.</p></li>
+<li><p>The generated data is sent with the settings to the student.</p></li>
+<li><p>The student answers the question.</p></li>
+<li><p>If the <cite>feedback</cite> setting is <cite>False</cite>, their answer is verified against the list of solutions.</p></li>
+<li><p>Otherwise, another object of the question class is instantiated.</p></li>
+<li><p>Their answer is processed by its <cite>generate_feedback()</cite> method and the explanation is shown to them.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When the graphs are passed to each method, a deepcopy is used.
+This means you are free to modify the graphs themselves if you like.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="GraphQuest" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api.html" class="btn btn-neutral float-right" title="API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Paolo Mura.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
