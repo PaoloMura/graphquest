@@ -28,7 +28,6 @@ Usage
 Here's an example of the GraphQuest package being used to create a new question from the QVertexSet type.
 
 .. code-block:: python
-    :lineno-start: 1
 
     # Import the question type you need.
     from graphquest.question import QVertexSet
