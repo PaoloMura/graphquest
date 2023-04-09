@@ -85,9 +85,10 @@ where teachers can upload their question generators and build topics (i.e. quizz
 </dl>
 </li>
 </ul>
+<p>The GraphQuest repository can be found at <a class="reference external" href="https://github.com/PaoloMura/graphquest">https://github.com/PaoloMura/graphquest</a></p>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
-<p>Use <cite>pip &lt;https://pypi.org/project/pip/&gt;</cite> to install the GraphQuest package:</p>
+<p>Use <a class="reference external" href="https://pypi.org/project/pip/">pip</a> to install the GraphQuest package:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install graphquest
 </pre></div>
 </div>
@@ -95,37 +96,37 @@ where teachers can upload their question generators and build topics (i.e. quizz
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h2>
 <p>Here’s an example of the GraphQuest package being used to create a new question from the QVertexSet type.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># Import the question type you need.</span>
-<span class="linenos"> 2</span><span class="kn">from</span> <span class="nn">graphquest.question</span> <span class="kn">import</span> <span class="n">QVertexSet</span>
-<span class="linenos"> 3</span><span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
-<span class="linenos"> 4</span><span class="kn">import</span> <span class="nn">random</span>
-<span class="linenos"> 5</span>
-<span class="linenos"> 6</span><span class="c1"># Extend the question type.</span>
-<span class="linenos"> 7</span><span class="k">class</span> <span class="nc">EvenDegrees</span><span class="p">(</span><span class="n">QVertexSet</span><span class="p">):</span>
-<span class="linenos"> 8</span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="linenos"> 9</span>        <span class="c1"># Pass in settings to the parent&#39;s constructor.</span>
-<span class="linenos">10</span>        <span class="c1"># The circle layout arranges nodes in a clockwise circle.</span>
-<span class="linenos">11</span>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">layout</span><span class="o">=</span><span class="s2">&quot;circle&quot;</span><span class="p">)</span>
-<span class="linenos">12</span>
-<span class="linenos">13</span>    <span class="k">def</span> <span class="nf">generate_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="linenos">14</span>        <span class="c1"># Return the list of networkx graphs to be displayed.</span>
-<span class="linenos">15</span>        <span class="n">n</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-<span class="linenos">16</span>        <span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">gnp_random_graph</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
-<span class="linenos">17</span>        <span class="k">return</span> <span class="p">[</span><span class="n">G</span><span class="p">]</span>
-<span class="linenos">18</span>
-<span class="linenos">19</span>    <span class="k">def</span> <span class="nf">generate_question</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graphs</span><span class="p">):</span>
-<span class="linenos">20</span>        <span class="c1"># Return the wording of the question.</span>
-<span class="linenos">21</span>        <span class="k">return</span> <span class="s2">&quot;Select all vertices with degree &gt; 2&quot;</span>
-<span class="linenos">22</span>
-<span class="linenos">23</span>    <span class="k">def</span> <span class="nf">generate_solutions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graphs</span><span class="p">):</span>
-<span class="linenos">24</span>        <span class="c1"># Return a list of all acceptable solutions.</span>
-<span class="linenos">25</span>        <span class="c1"># Each solution must be a node value.</span>
-<span class="linenos">26</span>        <span class="n">solution</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="ow">in</span> <span class="n">graphs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">degree</span> <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">]</span>
-<span class="linenos">27</span>        <span class="k">return</span> <span class="p">[</span><span class="n">solution</span><span class="p">]</span>
-<span class="linenos">28</span>
-<span class="linenos">29</span>    <span class="k">def</span> <span class="nf">generate_feedback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graphs</span><span class="p">,</span> <span class="n">answer</span><span class="p">):</span>
-<span class="linenos">30</span>        <span class="c1"># Leave this as a stub function, since we aren&#39;t providing detailed feedback.</span>
-<span class="linenos">31</span>        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the question type you need.</span>
+<span class="kn">from</span> <span class="nn">graphquest.question</span> <span class="kn">import</span> <span class="n">QVertexSet</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="c1"># Extend the question type.</span>
+<span class="k">class</span> <span class="nc">EvenDegrees</span><span class="p">(</span><span class="n">QVertexSet</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Pass in settings to the parent&#39;s constructor.</span>
+        <span class="c1"># The circle layout arranges nodes in a clockwise circle.</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">layout</span><span class="o">=</span><span class="s2">&quot;circle&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">generate_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Return the list of networkx graphs to be displayed.</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">gnp_random_graph</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">G</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">generate_question</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graphs</span><span class="p">):</span>
+        <span class="c1"># Return the wording of the question.</span>
+        <span class="k">return</span> <span class="s2">&quot;Select all vertices with degree &gt; 2&quot;</span>
+
+    <span class="k">def</span> <span class="nf">generate_solutions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graphs</span><span class="p">):</span>
+        <span class="c1"># Return a list of all acceptable solutions.</span>
+        <span class="c1"># Each solution must be a node value.</span>
+        <span class="n">solution</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="ow">in</span> <span class="n">graphs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">degree</span> <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">solution</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">generate_feedback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graphs</span><span class="p">,</span> <span class="n">answer</span><span class="p">):</span>
+        <span class="c1"># Leave this as a stub function, since we aren&#39;t providing detailed feedback.</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 </pre></div>
 </div>
 </section>
