@@ -12,11 +12,13 @@ This library contains the following modules:
 * `question.py <https://github.com/PaoloMura/graphquest/blob/main/src/graphquest/question.py>`_
     A module that contains all the question types that you can extend.
 
+The GraphQuest repository can be found at :ref:`https://github.com/PaoloMura/graphquest`
+
 
 Installation
 ------------
 
-Use `pip <https://pypi.org/project/pip/>` to install the GraphQuest package:
+Use :ref:`pip <https://pypi.org/project/pip/>` to install the GraphQuest package:
 
 .. code-block:: console
 
