@@ -10,7 +10,7 @@ authors = [
 ]
 description = "A small package for creating question generators for use in the Graph Quest website."
 readme = "README.rst"
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
