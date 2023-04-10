@@ -16,7 +16,14 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+license = { file="LICENSE" }
+dependencies = [
+    "networkx==3.1",
+    "numpy==1.24.2",
+    "shapely==2.0.1"
+]
 
 [project.urls]
-"Homepage" = "https://github.com/PaoloMura/graph-quest"
-"Bug Tracker" = "https://github.com/PaoloMura/graph-quest/issues"
+repository = "https://github.com/PaoloMura/graph-quest"
+bug_tracker = "https://github.com/PaoloMura/graph-quest/issues"
+documentation = "https://graphquest.readthedocs.io/en/latest/index.html"

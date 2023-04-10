@@ -22,7 +22,8 @@ Use `pip <https://pypi.org/project/pip/>`_ to install the GraphQuest package:
 
 .. code-block:: console
 
-    $ pip install graphquest
+    $ pip install graphquest@git+https://github.com/PaoloMura/graphquest/
+
 
 Usage
 -----
