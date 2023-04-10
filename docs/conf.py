@@ -63,3 +63,12 @@ html_theme = "sphinx_rtd_theme"
 # so a file named "default.css" will overwrite the builtin "default.css".
 #html_static_path = ["_static"]
 html_static_path = []
+
+
+########### TRICK FOUND ON SOME TUTORIAL : ADD IN THE MOCK_MODULES ANY EXTERNAL MODULE YOU'RE USING IN YOUR PACKAGE.
+
+# import mock
+#
+# MOCK_MODULES = ['numpy', 'networkx', 'shapely', 'math', 'abc', 'random']
+# for mod_name in MOCK_MODULES:
+#     sys.modules[mod_name] = mock.Mock()
