@@ -52,12 +52,12 @@ Here's an example of the GraphQuest package being used to create a new question 
 
         def generate_question(self, graphs):
             # Return the wording of the question.
-            return "Select all vertices with degree > 2"
+            return "Select all vertices with even degree."
 
         def generate_solutions(self, graphs):
             # Return a list of all acceptable solutions.
             # Each solution must be a node value.
-            solution = [n for (n, d) in graphs[0].degree if d > 2]
+            solution = [n for (n, d) in graphs[0].degree if d % 2 == 0]
             return [solution]
 
         def generate_feedback(self, graphs, answer):
