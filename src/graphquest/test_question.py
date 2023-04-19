@@ -3,7 +3,7 @@ import importlib
 import inspect
 import networkx as nx
 import random
-from src.graphquest.question import Question
+from question import Question
 import string
 
 
