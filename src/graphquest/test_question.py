@@ -3,14 +3,14 @@ import importlib
 import inspect
 import networkx as nx
 import random
-from question import Question
+# Swap the comment round for these lines when in development vs deployment
+# from src.graphquest.question import Question
+from graphquest.question import Question
 import string
 
 
-parser = argparse.ArgumentParser()
-parser.add_argument('-f', '--file', nargs='?', help='filepath to be tested')
-parser.add_argument('-v', '--verbose', nargs='?', default=True, help='whether to print additional output')
-args = parser.parse_args()
+file = ''
+verbose = True
 
 def __load_module(filepath: str):
     """Load the specified Python module dynamically"""
@@ -48,6 +48,47 @@ def __valid_type(q_type):
                       'QEdgeSet',
                       'QSelectPath']
     return q_type in accepted_types
+
+
+def __validate_attributes(q, q_type):
+    attributes = dir(q)
+    assert 'layout' in attributes, 'Class must contain a layout attribute'
+    assert q.layout in ['force-directed', 'circle', 'grid', 'bipartite'], 'Invalid layout attribute'
+
+    assert 'feedback' in attributes, 'Class must contain a feedback attribute'
+    assert isinstance(q.feedback, bool), 'Invalid feedback attribute'
+
+    assert 'node_prefix' in attributes, 'Class must contain a node_prefix attribute'
+    assert isinstance(q.node_prefix, str), 'Invalid node_prefix attribute'
+
+    assert 'label_style' in attributes, 'Class must contain a label_style attribute'
+    assert q.label_style in ['none', 'math'], 'Invalid label_style attribute'
+
+    assert 'data' in attributes, 'Class must contain a data attribute'
+
+    assert 'highlighted_nodes' in attributes, 'Class must contain a highlighted_nodes attribute'
+    if q.highlighted_nodes is not None:
+        assert isinstance(q.highlighted_nodes, list), 'Invalid highlighted_nodes attribute'
+        for node in q.highlighted_nodes:
+            assert isinstance(node, int), 'Invalid highlighted_nodes attribute'
+
+    assert 'highlighted_edges' in attributes, 'Class must contain a highlighted_edges attribute'
+    if q.highlighted_edges is not None:
+        assert isinstance(q.highlighted_edges, list), 'Invalid highlighted_edges attribute'
+        for edge in q.highlighted_edges:
+            assert isinstance(edge, int), 'Invalid highlighted_edges attribute'
+
+    if q_type == 'QTextInput':
+        assert 'data_type' in attributes, 'Class must contain a data_type attribute'
+        assert q.data_type in ['string', 'integer'], 'Invalid data_type attribute'
+
+    elif q_type == 'QMultipleChoice':
+        assert 'single_selection' in attributes, 'Class must contain a single_selection attribute'
+        assert isinstance(q.single_selection, bool), 'Invalid single_selection attribute'
+
+    elif q_type in ['QVertexSet', 'QEdgeSet']:
+        assert 'selection_limit' in attributes, 'Class must contain a selection_limit attribute'
+        assert isinstance(q.selection_limit, int), 'Invalid selection_limit attribute'
 
 
 def __random_string():
@@ -107,13 +148,15 @@ def __make_dummy_answer(q, q_type, gs):
         sols = q.generate_solutions(gs)
         return [[opt, random.choice([True, False])] for opt, _ in sols]
     elif q_type == 'QVertexSet':
-        k = random.randint(0, len(gs[0].nodes))
-        xs = random.sample(gs[0].nodes, k)
+        nodes = list(gs[0].nodes)
+        k = random.randint(0, len(nodes))
+        xs = random.sample(nodes, k)
         random.shuffle(xs)
         return xs
     elif q_type == 'QEdgeSet':
-        k = random.randint(0, len(gs[0].edges))
-        xs = random.sample(gs[0].edges, k)
+        edges = list(gs[0].edges)
+        k = random.randint(0, len(edges))
+        xs = random.sample(edges, k)
         xs = [list(x) for x in xs]
         random.shuffle(xs)
         return xs
@@ -134,14 +177,19 @@ answer_type = {
 
 
 def __validate_question(q):
-    if args.verbose:
+    if verbose:
         print(f'Testing {type(q).__name__}...')
 
     # Test the class type is valid
     q_type = type(q).__bases__[0].__name__
     assert __valid_type(q_type), 'Class must derive from a Question base'
 
-    if args.verbose:
+    if verbose:
+        print('\tTesting attributes...', end='\t')
+
+    __validate_attributes(q, q_type)
+
+    if verbose:
         print('\tTesting generate_data()...', end='\t')
 
     # Test it has a generate_data method
@@ -158,7 +206,7 @@ def __validate_question(q):
     for g in gs:
         assert isinstance(g, nx.Graph), 'generate_data() must return a list[networkx.Graph]'
 
-    if args.verbose:
+    if verbose:
         print('pass!')
         print('\tTesting generate_question()...', end='\t')
 
@@ -174,11 +222,11 @@ def __validate_question(q):
     question = q.generate_question(gs)
     assert isinstance(question, str), 'generate_question() must return a str'
 
-    if args.verbose:
+    if verbose:
         print('pass!')
 
     if q.feedback:
-        if args.verbose:
+        if verbose:
             print('\tTesting generate_feedback()...', end='\t')
 
         # Test it has a generate_feedback method
@@ -197,13 +245,13 @@ def __validate_question(q):
         assert isinstance(result[0], bool), 'generate_solutions() must return a tuple[str, str]'
         assert isinstance(result[1], str), 'generate_solutions() must return a tuple[bool, str]'
 
-        if args.verbose:
+        if verbose:
             print('pass!')
     else:
-        if args.verbose:
+        if verbose:
             print('\tTesting generate_feedback()...', end='\t')
         __validate_generate_solutions(q, q_type, gs)
-        if args.verbose:
+        if verbose:
             print('pass!')
 
 
@@ -211,20 +259,20 @@ def test_file(filepath='', verbose=True):
     """Test all the question classes in the given file"""
     if filepath != '':
         q_classes = __get_questions(filepath)
-        args.verbose = verbose
+        verbose = verbose
     else:
-        q_classes = __get_questions(args.file)
+        q_classes = __get_questions(file)
     for cls in q_classes:
         obj = cls()
         __validate_question(obj)
-    if args.verbose:
+    if verbose:
         print('All tests pass!')
 
 def test_class(cls: type):
     """Test the given question class"""
     obj = cls()
     __validate_question(obj)
-    if args.verbose:
+    if verbose:
         print('All tests pass!')
 
 

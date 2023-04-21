@@ -11,12 +11,21 @@ class Question(ABC):
 
     Do not directly extend this class. Instead, extend its children (e.g. QTextInput).
     """
-    def __init__(self, layout='force-directed', feedback=False, node_prefix='', label_style='none', data=None):
+    def __init__(self,
+                 layout='force-directed',
+                 feedback=False,
+                 node_prefix='',
+                 label_style='none',
+                 data=None,
+                 highlighted_nodes=None,
+                 highlighted_edges=None):
         self.layout = layout
         self.feedback = feedback
         self.node_prefix = node_prefix
         self.label_style = label_style
         self.data = data
+        self.highlighted_nodes = highlighted_nodes
+        self.highlighted_edges = highlighted_edges
 
     @abstractmethod
     def generate_data(self) -> list[nx.Graph]:
@@ -129,9 +138,21 @@ class QSelectPath(Question):
     data : None | any
         Persistent storage. You can set `data` to anything that is JSON serializable,
         and it will still be accessible if/when the `generate_feedback()` method is called.
+
+    highlighted_nodes : None | list[int]
+        A list of nodes to be highlighted in the graph with an underlay.
+        If you update it within the `generate_feedback()` method,
+        the changes will apply when displaying the feedback.
+
+    highlighted_edges : None | list[list[int, int]]
+        A list of edges to be highlighted in the graph with an underlay.
+        If you update it within the `generate_feedback()` method,
+        the changes will apply when displaying the feedback.
     """
-    def __init__(self, layout='force-directed', feedback=False, node_prefix='', label_style='none', data=None):
-        super().__init__(layout=layout, feedback=feedback, node_prefix=node_prefix, label_style=label_style, data=data)
+    def __init__(self, layout='force-directed', feedback=False, node_prefix='', label_style='none', data=None,
+                 highlighted_nodes=None, highlighted_edges=None):
+        super().__init__(layout=layout, feedback=feedback, node_prefix=node_prefix, label_style=label_style, data=data,
+                         highlighted_nodes=highlighted_nodes, highlighted_edges=highlighted_edges)
 
     @abstractmethod
     def generate_solutions(self, graphs: list[nx.Graph]) -> list[list[int]]:
@@ -221,13 +242,24 @@ class QTextInput(Question):
         Persistent storage. You can set `data` to anything that is JSON serializable,
         and it will still be accessible if/when the `generate_feedback()` method is called.
 
+    highlighted_nodes : None | list[int]
+        A list of nodes to be highlighted in the graph with an underlay.
+        If you update it within the `generate_feedback()` method,
+        the changes will apply when displaying the feedback.
+
+    highlighted_edges : None | list[list[int, int]]
+        A list of edges to be highlighted in the graph with an underlay.
+        If you update it within the `generate_feedback()` method,
+        the changes will apply when displaying the feedback.
+
     data_type : str
         `"string"` [default] | `"integer"`
         If set to `"integer"`, client-side type-checking will be used to ensure the user only enters an integer value.
     """
     def __init__(self, layout='force-directed', feedback=False, node_prefix='', label_style='none', data=None,
-                 data_type='string'):
-        super().__init__(layout=layout, feedback=feedback, node_prefix=node_prefix, label_style=label_style, data=data)
+                 highlighted_nodes=None, highlighted_edges=None, data_type='string'):
+        super().__init__(layout=layout, feedback=feedback, node_prefix=node_prefix, label_style=label_style, data=data,
+                         highlighted_nodes=highlighted_nodes, highlighted_edges=highlighted_edges)
         self.data_type = data_type
 
     @abstractmethod
@@ -309,13 +341,24 @@ class QMultipleChoice(Question):
         Persistent storage. You can set `data` to anything that is JSON serializable,
         and it will still be accessible if/when the `generate_feedback()` method is called.
 
+    highlighted_nodes : None | list[int]
+        A list of nodes to be highlighted in the graph with an underlay.
+        If you update it within the `generate_feedback()` method,
+        the changes will apply when displaying the feedback.
+
+    highlighted_edges : None | list[list[int, int]]
+        A list of edges to be highlighted in the graph with an underlay.
+        If you update it within the `generate_feedback()` method,
+        the changes will apply when displaying the feedback.
+
     single_selection : bool
         If `True`, the user can only select a single option (i.e. radio button).
         Otherwise, the user can select multiple options (i.e. checkbox).
     """
     def __init__(self, layout='force-directed', feedback=False, node_prefix='', label_style='none', data=None,
-                 single_selection=False):
-        super().__init__(layout=layout, feedback=feedback, node_prefix=node_prefix, label_style=label_style, data=data)
+                 highlighted_nodes=None, highlighted_edges=None, single_selection=False):
+        super().__init__(layout=layout, feedback=feedback, node_prefix=node_prefix, label_style=label_style, data=data,
+                         highlighted_nodes=highlighted_nodes, highlighted_edges=highlighted_edges)
         self.single_selection = single_selection
 
     @abstractmethod
@@ -402,13 +445,24 @@ class QVertexSet(Question):
         Persistent storage. You can set `data` to anything that is JSON serializable,
         and it will still be accessible if/when the `generate_feedback()` method is called.
 
+    highlighted_nodes : None | list[int]
+        A list of nodes to be highlighted in the graph with an underlay.
+        If you update it within the `generate_feedback()` method,
+        the changes will apply when displaying the feedback.
+
+    highlighted_edges : None | list[list[int, int]]
+        A list of edges to be highlighted in the graph with an underlay.
+        If you update it within the `generate_feedback()` method,
+        the changes will apply when displaying the feedback.
+
     selection_limit : int
         Maximum number of nodes the user is allowed to select.
         Default is `-1` (no limit).
     """
     def __init__(self, layout='force-directed', feedback=False, node_prefix='', label_style='none', data=None,
-                 selection_limit=-1,):
-        super().__init__(layout=layout, feedback=feedback, node_prefix=node_prefix, label_style=label_style, data=data)
+                 highlighted_nodes=None, highlighted_edges=None, selection_limit=-1,):
+        super().__init__(layout=layout, feedback=feedback, node_prefix=node_prefix, label_style=label_style, data=data,
+                         highlighted_nodes=highlighted_nodes, highlighted_edges=highlighted_edges)
         self.selection_limit = selection_limit
 
     @abstractmethod
@@ -497,13 +551,24 @@ class QEdgeSet(Question):
         Persistent storage. You can set `data` to anything that is JSON serializable,
         and it will still be accessible if/when the `generate_feedback()` method is called.
 
+    highlighted_nodes : None | list[int]
+        A list of nodes to be highlighted in the graph with an underlay.
+        If you update it within the `generate_feedback()` method,
+        the changes will apply when displaying the feedback.
+
+    highlighted_edges : None | list[list[int, int]]
+        A list of edges to be highlighted in the graph with an underlay.
+        If you update it within the `generate_feedback()` method,
+        the changes will apply when displaying the feedback.
+
     selection_limit : int
         The maximum number of edges the user is allowed to select.
         Default is `-1` (no limit).
     """
     def __init__(self, layout='force-directed', feedback=False, node_prefix='', label_style='none', data=None,
-                 selection_limit=-1):
-        super().__init__(layout=layout, feedback=feedback, node_prefix=node_prefix, label_style=label_style, data=data)
+                 highlighted_nodes=None, highlighted_edges=None, selection_limit=-1):
+        super().__init__(layout=layout, feedback=feedback, node_prefix=node_prefix, label_style=label_style, data=data,
+                         highlighted_nodes=highlighted_nodes, highlighted_edges=highlighted_edges)
         self.selection_limit = selection_limit
 
     @abstractmethod
