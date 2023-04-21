@@ -3,9 +3,11 @@ import importlib
 import inspect
 import networkx as nx
 import random
+
 # Swap the comment round for these lines when in development vs deployment
-# from src.graphquest.question import Question
+#from src.graphquest.question import Question
 from graphquest.question import Question
+
 import string
 
 
@@ -190,6 +192,7 @@ def __validate_question(q):
     __validate_attributes(q, q_type)
 
     if verbose:
+        print('pass!')
         print('\tTesting generate_data()...', end='\t')
 
     # Test it has a generate_data method
