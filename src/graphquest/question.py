@@ -18,7 +18,8 @@ class Question(ABC):
                  label_style='none',
                  data=None,
                  highlighted_nodes=None,
-                 highlighted_edges=None):
+                 highlighted_edges=None,
+                 roots=None):
         self.layout = layout
         self.feedback = feedback
         self.node_prefix = node_prefix
@@ -26,6 +27,7 @@ class Question(ABC):
         self.data = data
         self.highlighted_nodes = highlighted_nodes
         self.highlighted_edges = highlighted_edges
+        self.roots = roots
 
     @abstractmethod
     def generate_data(self) -> list[nx.Graph]:
@@ -121,7 +123,7 @@ class QSelectPath(Question):
     Attributes
     ----------
     layout : str
-        `"force-directed"` [default] | `"circle"` | `"grid"` | `"bipartite"`
+        `"force-directed"` [default] | `"circle"` | `"grid"` | `"bipartite"` | `"tree"`
         Determines the layout style for the graph.
 
     feedback : bool
@@ -148,11 +150,22 @@ class QSelectPath(Question):
         A list of edges to be highlighted in the graph with an underlay.
         If you update it within the `generate_feedback()` method,
         the changes will apply when displaying the feedback.
+
+    roots : None | list[int]
+        A list of root nodes corresponding to each graph in data.
+
+        For example, if the `generate_data()` method returns two graphs
+        and roots is `[4, 1]`, then node 4 will be the root of the first graph
+        and node 1 will be the root of the second.
+
+        When roots is None or empty, or for an invalid node, the root is
+        either chosen randomly (for large graphs) or by choosing the midpoint
+        of the longest path (for small graphs).
     """
     def __init__(self, layout='force-directed', feedback=False, node_prefix='', label_style='none', data=None,
-                 highlighted_nodes=None, highlighted_edges=None):
+                 highlighted_nodes=None, highlighted_edges=None, roots=None):
         super().__init__(layout=layout, feedback=feedback, node_prefix=node_prefix, label_style=label_style, data=data,
-                         highlighted_nodes=highlighted_nodes, highlighted_edges=highlighted_edges)
+                         highlighted_nodes=highlighted_nodes, highlighted_edges=highlighted_edges, roots=roots)
 
     @abstractmethod
     def generate_solutions(self, graphs: list[nx.Graph]) -> list[list[int]]:
@@ -224,7 +237,7 @@ class QTextInput(Question):
     Attributes
     ----------
     layout : str
-        `"force-directed"` [default] | `"circle"` | `"grid"` | `"bipartite"`
+        `"force-directed"` [default] | `"circle"` | `"grid"` | `"bipartite"` | `"tree"`
         Determines the layout style for the graph.
 
     feedback : bool
@@ -252,14 +265,25 @@ class QTextInput(Question):
         If you update it within the `generate_feedback()` method,
         the changes will apply when displaying the feedback.
 
+    roots : None | list[int]
+        A list of root nodes corresponding to each graph in data.
+
+        For example, if the `generate_data()` method returns two graphs
+        and roots is `[4, 1]`, then node 4 will be the root of the first graph
+        and node 1 will be the root of the second.
+
+        When roots is None or empty, or for an invalid node, the root is
+        either chosen randomly (for large graphs) or by choosing the midpoint
+        of the longest path (for small graphs).
+
     data_type : str
         `"string"` [default] | `"integer"`
         If set to `"integer"`, client-side type-checking will be used to ensure the user only enters an integer value.
     """
     def __init__(self, layout='force-directed', feedback=False, node_prefix='', label_style='none', data=None,
-                 highlighted_nodes=None, highlighted_edges=None, data_type='string'):
+                 highlighted_nodes=None, highlighted_edges=None, roots=None, data_type='string'):
         super().__init__(layout=layout, feedback=feedback, node_prefix=node_prefix, label_style=label_style, data=data,
-                         highlighted_nodes=highlighted_nodes, highlighted_edges=highlighted_edges)
+                         highlighted_nodes=highlighted_nodes, highlighted_edges=highlighted_edges, roots=roots)
         self.data_type = data_type
 
     @abstractmethod
@@ -323,7 +347,7 @@ class QMultipleChoice(Question):
     Attributes
     ----------
     layout : str
-        `"force-directed"` [default] | `"circle"` | `"grid"` | `"bipartite"`
+        `"force-directed"` [default] | `"circle"` | `"grid"` | `"bipartite"` | `"tree"`
         Determines the layout style for the graph.
 
     feedback : bool
@@ -351,14 +375,25 @@ class QMultipleChoice(Question):
         If you update it within the `generate_feedback()` method,
         the changes will apply when displaying the feedback.
 
+    roots : None | list[int]
+        A list of root nodes corresponding to each graph in data.
+
+        For example, if the `generate_data()` method returns two graphs
+        and roots is `[4, 1]`, then node 4 will be the root of the first graph
+        and node 1 will be the root of the second.
+
+        When roots is None or empty, or for an invalid node, the root is
+        either chosen randomly (for large graphs) or by choosing the midpoint
+        of the longest path (for small graphs).
+
     single_selection : bool
         If `True`, the user can only select a single option (i.e. radio button).
         Otherwise, the user can select multiple options (i.e. checkbox).
     """
     def __init__(self, layout='force-directed', feedback=False, node_prefix='', label_style='none', data=None,
-                 highlighted_nodes=None, highlighted_edges=None, single_selection=False):
+                 highlighted_nodes=None, highlighted_edges=None, roots=None, single_selection=False):
         super().__init__(layout=layout, feedback=feedback, node_prefix=node_prefix, label_style=label_style, data=data,
-                         highlighted_nodes=highlighted_nodes, highlighted_edges=highlighted_edges)
+                         highlighted_nodes=highlighted_nodes, highlighted_edges=highlighted_edges, roots=roots)
         self.single_selection = single_selection
 
     @abstractmethod
@@ -427,7 +462,7 @@ class QVertexSet(Question):
     Attributes
     ----------
     layout : str
-        `"force-directed"` [default] | `"circle"` | `"grid"` | `"bipartite"`
+        `"force-directed"` [default] | `"circle"` | `"grid"` | `"bipartite"` | `"tree"`
         Determines the layout style for the graph.
 
     feedback : bool
@@ -455,14 +490,25 @@ class QVertexSet(Question):
         If you update it within the `generate_feedback()` method,
         the changes will apply when displaying the feedback.
 
+    roots : None | list[int]
+        A list of root nodes corresponding to each graph in data.
+
+        For example, if the `generate_data()` method returns two graphs
+        and roots is `[4, 1]`, then node 4 will be the root of the first graph
+        and node 1 will be the root of the second.
+
+        When roots is None or empty, or for an invalid node, the root is
+        either chosen randomly (for large graphs) or by choosing the midpoint
+        of the longest path (for small graphs).
+
     selection_limit : int
         Maximum number of nodes the user is allowed to select.
         Default is `-1` (no limit).
     """
     def __init__(self, layout='force-directed', feedback=False, node_prefix='', label_style='none', data=None,
-                 highlighted_nodes=None, highlighted_edges=None, selection_limit=-1,):
+                 highlighted_nodes=None, highlighted_edges=None, roots=None, selection_limit=-1,):
         super().__init__(layout=layout, feedback=feedback, node_prefix=node_prefix, label_style=label_style, data=data,
-                         highlighted_nodes=highlighted_nodes, highlighted_edges=highlighted_edges)
+                         highlighted_nodes=highlighted_nodes, highlighted_edges=highlighted_edges, roots=roots)
         self.selection_limit = selection_limit
 
     @abstractmethod
@@ -533,7 +579,7 @@ class QEdgeSet(Question):
     Attributes
     ----------
     layout : str
-        `"force-directed"` [default] | `"circle"` | `"grid"` | `"bipartite"`
+        `"force-directed"` [default] | `"circle"` | `"grid"` | `"bipartite"` | `"tree"`
         Determines the layout style for the graph.
 
     feedback : bool
@@ -561,14 +607,25 @@ class QEdgeSet(Question):
         If you update it within the `generate_feedback()` method,
         the changes will apply when displaying the feedback.
 
+    roots : None | list[int]
+        A list of root nodes corresponding to each graph in data.
+
+        For example, if the `generate_data()` method returns two graphs
+        and roots is `[4, 1]`, then node 4 will be the root of the first graph
+        and node 1 will be the root of the second.
+
+        When roots is None or empty, or for an invalid node, the root is
+        either chosen randomly (for large graphs) or by choosing the midpoint
+        of the longest path (for small graphs).
+
     selection_limit : int
         The maximum number of edges the user is allowed to select.
         Default is `-1` (no limit).
     """
     def __init__(self, layout='force-directed', feedback=False, node_prefix='', label_style='none', data=None,
-                 highlighted_nodes=None, highlighted_edges=None, selection_limit=-1):
+                 highlighted_nodes=None, highlighted_edges=None, roots=None, selection_limit=-1):
         super().__init__(layout=layout, feedback=feedback, node_prefix=node_prefix, label_style=label_style, data=data,
-                         highlighted_nodes=highlighted_nodes, highlighted_edges=highlighted_edges)
+                         highlighted_nodes=highlighted_nodes, highlighted_edges=highlighted_edges, roots=roots)
         self.selection_limit = selection_limit
 
     @abstractmethod

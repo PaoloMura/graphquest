@@ -80,6 +80,12 @@ def __validate_attributes(q, q_type):
         for edge in q.highlighted_edges:
             assert isinstance(edge, int), 'Invalid highlighted_edges attribute'
 
+    assert 'roots' in attributes, 'Class must contain a roots attribute'
+    if q.roots is not None:
+        assert isinstance(q.roots, list), 'Invalid roots attribute'
+        for node in q.roots:
+            assert isinstance(node, int), 'Invalid roots attribute'
+
     if q_type == 'QTextInput':
         assert 'data_type' in attributes, 'Class must contain a data_type attribute'
         assert q.data_type in ['string', 'integer'], 'Invalid data_type attribute'
