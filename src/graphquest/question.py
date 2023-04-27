@@ -124,6 +124,7 @@ class QSelectPath(Question):
     ----------
     layout : str
         `"force-directed"` [default] | `"circle"` | `"grid"` | `"bipartite"` | `"tree"`
+
         Determines the layout style for the graph.
 
     feedback : bool
@@ -135,6 +136,7 @@ class QSelectPath(Question):
 
     label_style : str
         `"none"` [default] | `"math"`
+
         Determines the style for node labels.
 
     data : None | any
@@ -152,13 +154,13 @@ class QSelectPath(Question):
         the changes will apply when displaying the feedback.
 
     roots : None | list[int]
-        A list of root nodes corresponding to each graph in data.
+        A list of root nodes corresponding to each graph in `data`.
 
         For example, if the `generate_data()` method returns two graphs
-        and roots is `[4, 1]`, then node 4 will be the root of the first graph
+        and `roots` is `[4, 1]`, then node 4 will be the root of the first graph
         and node 1 will be the root of the second.
 
-        When roots is None or empty, or for an invalid node, the root is
+        When `roots` is `None` or `[]`, or for an invalid node, the root is
         either chosen randomly (for large graphs) or by choosing the midpoint
         of the longest path (for small graphs).
     """
@@ -238,6 +240,7 @@ class QTextInput(Question):
     ----------
     layout : str
         `"force-directed"` [default] | `"circle"` | `"grid"` | `"bipartite"` | `"tree"`
+
         Determines the layout style for the graph.
 
     feedback : bool
@@ -249,6 +252,7 @@ class QTextInput(Question):
 
     label_style : str
         `"none"` [default] | `"math"`
+
         Determines the style for node labels.
 
     data : None | any
@@ -266,18 +270,19 @@ class QTextInput(Question):
         the changes will apply when displaying the feedback.
 
     roots : None | list[int]
-        A list of root nodes corresponding to each graph in data.
+        A list of root nodes corresponding to each graph in `data`.
 
         For example, if the `generate_data()` method returns two graphs
-        and roots is `[4, 1]`, then node 4 will be the root of the first graph
+        and `roots` is `[4, 1]`, then node 4 will be the root of the first graph
         and node 1 will be the root of the second.
 
-        When roots is None or empty, or for an invalid node, the root is
+        When `roots` is `None` or `[]`, or for an invalid node, the root is
         either chosen randomly (for large graphs) or by choosing the midpoint
         of the longest path (for small graphs).
 
     data_type : str
         `"string"` [default] | `"integer"`
+
         If set to `"integer"`, client-side type-checking will be used to ensure the user only enters an integer value.
     """
     def __init__(self, layout='force-directed', feedback=False, node_prefix='', label_style='none', data=None,
@@ -348,6 +353,7 @@ class QMultipleChoice(Question):
     ----------
     layout : str
         `"force-directed"` [default] | `"circle"` | `"grid"` | `"bipartite"` | `"tree"`
+
         Determines the layout style for the graph.
 
     feedback : bool
@@ -359,6 +365,7 @@ class QMultipleChoice(Question):
 
     label_style : str
         `"none"` [default] | `"math"`
+
         Determines the style for node labels.
 
     data : None | any
@@ -376,13 +383,13 @@ class QMultipleChoice(Question):
         the changes will apply when displaying the feedback.
 
     roots : None | list[int]
-        A list of root nodes corresponding to each graph in data.
+        A list of root nodes corresponding to each graph in `data`.
 
         For example, if the `generate_data()` method returns two graphs
-        and roots is `[4, 1]`, then node 4 will be the root of the first graph
+        and `roots` is `[4, 1]`, then node 4 will be the root of the first graph
         and node 1 will be the root of the second.
 
-        When roots is None or empty, or for an invalid node, the root is
+        When `roots` is `None` or `[]`, or for an invalid node, the root is
         either chosen randomly (for large graphs) or by choosing the midpoint
         of the longest path (for small graphs).
 
@@ -463,6 +470,7 @@ class QVertexSet(Question):
     ----------
     layout : str
         `"force-directed"` [default] | `"circle"` | `"grid"` | `"bipartite"` | `"tree"`
+
         Determines the layout style for the graph.
 
     feedback : bool
@@ -474,6 +482,7 @@ class QVertexSet(Question):
 
     label_style : str
         `"none"` [default] | `"math"`
+
         Determines the style for node labels.
 
     data : None | any
@@ -491,13 +500,13 @@ class QVertexSet(Question):
         the changes will apply when displaying the feedback.
 
     roots : None | list[int]
-        A list of root nodes corresponding to each graph in data.
+        A list of root nodes corresponding to each graph in `data`.
 
         For example, if the `generate_data()` method returns two graphs
-        and roots is `[4, 1]`, then node 4 will be the root of the first graph
+        and `roots` is `[4, 1]`, then node 4 will be the root of the first graph
         and node 1 will be the root of the second.
 
-        When roots is None or empty, or for an invalid node, the root is
+        When `roots` is `None` or `[]`, or for an invalid node, the root is
         either chosen randomly (for large graphs) or by choosing the midpoint
         of the longest path (for small graphs).
 
@@ -580,6 +589,7 @@ class QEdgeSet(Question):
     ----------
     layout : str
         `"force-directed"` [default] | `"circle"` | `"grid"` | `"bipartite"` | `"tree"`
+
         Determines the layout style for the graph.
 
     feedback : bool
@@ -591,6 +601,7 @@ class QEdgeSet(Question):
 
     label_style : str
         `"none"` [default] | `"math"`
+
         Determines the style for node labels.
 
     data : None | any
@@ -608,13 +619,13 @@ class QEdgeSet(Question):
         the changes will apply when displaying the feedback.
 
     roots : None | list[int]
-        A list of root nodes corresponding to each graph in data.
+        A list of root nodes corresponding to each graph in `data`.
 
         For example, if the `generate_data()` method returns two graphs
-        and roots is `[4, 1]`, then node 4 will be the root of the first graph
+        and `roots` is `[4, 1]`, then node 4 will be the root of the first graph
         and node 1 will be the root of the second.
 
-        When roots is None or empty, or for an invalid node, the root is
+        When `roots` is `None` or `[]`, or for an invalid node, the root is
         either chosen randomly (for large graphs) or by choosing the midpoint
         of the longest path (for small graphs).
 
