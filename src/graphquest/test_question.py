@@ -66,6 +66,9 @@ def __validate_attributes(q, q_type):
     assert 'label_style' in attributes, 'Class must contain a label_style attribute'
     assert q.label_style in ['none', 'math'], 'Invalid label_style attribute'
 
+    assert 'labels' in attributes, 'Class must contain a labels attribute'
+    assert isinstance(q.labels, bool), 'Invalid labels attribute'
+
     assert 'data' in attributes, 'Class must contain a data attribute'
 
     assert 'highlighted_nodes' in attributes, 'Class must contain a highlighted_nodes attribute'
