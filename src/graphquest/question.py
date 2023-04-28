@@ -16,6 +16,7 @@ class Question(ABC):
                  feedback=False,
                  node_prefix='',
                  label_style='none',
+                 labels=True,
                  data=None,
                  highlighted_nodes=None,
                  highlighted_edges=None,
@@ -24,6 +25,7 @@ class Question(ABC):
         self.feedback = feedback
         self.node_prefix = node_prefix
         self.label_style = label_style
+        self.labels=labels
         self.data = data
         self.highlighted_nodes = highlighted_nodes
         self.highlighted_edges = highlighted_edges
@@ -139,6 +141,9 @@ class QSelectPath(Question):
 
         Determines the style for node labels.
 
+    labels : bool
+        Whether to show node labels.
+
     data : None | any
         Persistent storage. You can set `data` to anything that is JSON serializable,
         and it will still be accessible if/when the `generate_feedback()` method is called.
@@ -164,9 +169,10 @@ class QSelectPath(Question):
         either chosen randomly (for large graphs) or by choosing the midpoint
         of the longest path (for small graphs).
     """
-    def __init__(self, layout='force-directed', feedback=False, node_prefix='', label_style='none', data=None,
-                 highlighted_nodes=None, highlighted_edges=None, roots=None):
-        super().__init__(layout=layout, feedback=feedback, node_prefix=node_prefix, label_style=label_style, data=data,
+    def __init__(self, layout='force-directed', feedback=False, node_prefix='', label_style='none', labels=True,
+                 data=None, highlighted_nodes=None, highlighted_edges=None, roots=None):
+        super().__init__(layout=layout, feedback=feedback,
+                         node_prefix=node_prefix, label_style=label_style, labels=labels,data=data,
                          highlighted_nodes=highlighted_nodes, highlighted_edges=highlighted_edges, roots=roots)
 
     @abstractmethod
@@ -255,6 +261,9 @@ class QTextInput(Question):
 
         Determines the style for node labels.
 
+    labels : bool
+        Whether to show node labels.
+
     data : None | any
         Persistent storage. You can set `data` to anything that is JSON serializable,
         and it will still be accessible if/when the `generate_feedback()` method is called.
@@ -285,10 +294,12 @@ class QTextInput(Question):
 
         If set to `"integer"`, client-side type-checking will be used to ensure the user only enters an integer value.
     """
-    def __init__(self, layout='force-directed', feedback=False, node_prefix='', label_style='none', data=None,
-                 highlighted_nodes=None, highlighted_edges=None, roots=None, data_type='string'):
-        super().__init__(layout=layout, feedback=feedback, node_prefix=node_prefix, label_style=label_style, data=data,
-                         highlighted_nodes=highlighted_nodes, highlighted_edges=highlighted_edges, roots=roots)
+    def __init__(self, layout='force-directed', feedback=False, node_prefix='', label_style='none', labels=True,
+                 data=None, highlighted_nodes=None, highlighted_edges=None, roots=None, data_type='string'):
+        super().__init__(layout=layout, feedback=feedback,
+                         node_prefix=node_prefix, label_style=label_style, labels=labels,
+                         data=data, highlighted_nodes=highlighted_nodes, highlighted_edges=highlighted_edges,
+                         roots=roots)
         self.data_type = data_type
 
     @abstractmethod
@@ -368,6 +379,9 @@ class QMultipleChoice(Question):
 
         Determines the style for node labels.
 
+    labels : bool
+        Whether to show node labels.
+
     data : None | any
         Persistent storage. You can set `data` to anything that is JSON serializable,
         and it will still be accessible if/when the `generate_feedback()` method is called.
@@ -397,10 +411,12 @@ class QMultipleChoice(Question):
         If `True`, the user can only select a single option (i.e. radio button).
         Otherwise, the user can select multiple options (i.e. checkbox).
     """
-    def __init__(self, layout='force-directed', feedback=False, node_prefix='', label_style='none', data=None,
-                 highlighted_nodes=None, highlighted_edges=None, roots=None, single_selection=False):
-        super().__init__(layout=layout, feedback=feedback, node_prefix=node_prefix, label_style=label_style, data=data,
-                         highlighted_nodes=highlighted_nodes, highlighted_edges=highlighted_edges, roots=roots)
+    def __init__(self, layout='force-directed', feedback=False, node_prefix='', label_style='none', labels=True,
+                 data=None, highlighted_nodes=None, highlighted_edges=None, roots=None, single_selection=False):
+        super().__init__(layout=layout, feedback=feedback,
+                         node_prefix=node_prefix, label_style=label_style, labels=labels,
+                         data=data, highlighted_nodes=highlighted_nodes, highlighted_edges=highlighted_edges,
+                         roots=roots)
         self.single_selection = single_selection
 
     @abstractmethod
@@ -485,6 +501,9 @@ class QVertexSet(Question):
 
         Determines the style for node labels.
 
+    labels : bool
+        Whether to show node labels.
+
     data : None | any
         Persistent storage. You can set `data` to anything that is JSON serializable,
         and it will still be accessible if/when the `generate_feedback()` method is called.
@@ -514,10 +533,12 @@ class QVertexSet(Question):
         Maximum number of nodes the user is allowed to select.
         Default is `-1` (no limit).
     """
-    def __init__(self, layout='force-directed', feedback=False, node_prefix='', label_style='none', data=None,
-                 highlighted_nodes=None, highlighted_edges=None, roots=None, selection_limit=-1,):
-        super().__init__(layout=layout, feedback=feedback, node_prefix=node_prefix, label_style=label_style, data=data,
-                         highlighted_nodes=highlighted_nodes, highlighted_edges=highlighted_edges, roots=roots)
+    def __init__(self, layout='force-directed', feedback=False, node_prefix='', labels=True, label_style='none',
+                 data=None, highlighted_nodes=None, highlighted_edges=None, roots=None, selection_limit=-1,):
+        super().__init__(layout=layout, feedback=feedback,
+                         node_prefix=node_prefix, label_style=label_style, labels=labels,
+                         data=data, highlighted_nodes=highlighted_nodes, highlighted_edges=highlighted_edges,
+                         roots=roots)
         self.selection_limit = selection_limit
 
     @abstractmethod
@@ -604,6 +625,9 @@ class QEdgeSet(Question):
 
         Determines the style for node labels.
 
+    labels : bool
+        Whether to show node labels.
+
     data : None | any
         Persistent storage. You can set `data` to anything that is JSON serializable,
         and it will still be accessible if/when the `generate_feedback()` method is called.
@@ -633,10 +657,12 @@ class QEdgeSet(Question):
         The maximum number of edges the user is allowed to select.
         Default is `-1` (no limit).
     """
-    def __init__(self, layout='force-directed', feedback=False, node_prefix='', label_style='none', data=None,
-                 highlighted_nodes=None, highlighted_edges=None, roots=None, selection_limit=-1):
-        super().__init__(layout=layout, feedback=feedback, node_prefix=node_prefix, label_style=label_style, data=data,
-                         highlighted_nodes=highlighted_nodes, highlighted_edges=highlighted_edges, roots=roots)
+    def __init__(self, layout='force-directed', feedback=False, node_prefix='', label_style='none', labels=True,
+                 data=None, highlighted_nodes=None, highlighted_edges=None, roots=None, selection_limit=-1):
+        super().__init__(layout=layout, feedback=feedback,
+                         node_prefix=node_prefix, label_style=label_style, labels=labels,
+                         data=data, highlighted_nodes=highlighted_nodes, highlighted_edges=highlighted_edges,
+                         roots=roots)
         self.selection_limit = selection_limit
 
     @abstractmethod
