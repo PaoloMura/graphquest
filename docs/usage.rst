@@ -6,11 +6,11 @@ Usage
 Installation
 ------------
 
-To use GraphQuest, first install it using pip:
+To use Graph Quest, first install it using pip:
 
 .. code-block:: console
 
-   (.venv) $ pip install graphquest
+   (.venv) $ pip install graphquest@git+https://github.com/PaoloMura/graphquest/
 
 
 .. _creating_questions:
@@ -65,6 +65,24 @@ All question types have four methods you must implement:
 * `generate_question(graphs)` - returns the wording of the question
 * `generate_solutions(graphs)` - returns a list of accepted solutions
 * `generate_feedback(graphs, answer)` - returns whether the given answer is correct, together with an explanation
+
+There are currently five supported question types in Graph Quest:
+
+* `QTextInput` (answer via a text box)
+* `QMultipleChoice` (answer by selecting options)
+* `QVertexSet` (answer by tapping on nodes in the graph)
+* `QEdgeSet` (answer by tapping on edges in the graph)
+* `QSelectPath` (answer by tapping nodes in a valid order in the graph)
+
+See :ref:`the examples <example_question_types>` for how each question type is displayed.
+
+.. note::
+
+    The data type used for the answer is different for each question type.
+    `QTextInput` and `QMultipleChoice` allow for multiple graphs to be displayed side by side,
+    which will be labelled as G1, G2, ....
+    The other question types only allow a single NetworkX graph to be used in the question
+    (however this may include multiple components).
 
 
 .. _generating_answer_feedback:
@@ -132,6 +150,7 @@ The options are:
 * `circle` (nodes are arranged in a clockwise circle in order of their value);
 * `grid` (nodes are arranged in a grid);
 * `bipartite` (nodes are assigned to one of two columns).
+* `tree` (nodes are arranged in a hierarchical structure based on a breadth-first traversal).
 
 .. note::
 
@@ -141,6 +160,15 @@ The options are:
 The `data` setting gives persistent storage.
 It will retain its value when the `generate_feedback()` method is called.
 For more information on its relevance, see the :ref:`next section <question_lifecycle>`.
+
+The `highlight_nodes` and `highlight_edges` settings may be used to provide a list of elements
+to be highlighted with a blue underlay in the graph.
+These attributes may be changed in the `generate_feedback()` method,
+and when the feedback is shown to the student,
+those elements will also be highlighted in the graph to aid your explanation.
+
+All settings can be changed at any time within the class methods.
+See the :ref:`next section <question_lifecycle>` to understand exactly when the values will be used.
 
 See the :ref:`code above <python_feedback_setting>` for an example with the `feedback` setting.
 
@@ -158,11 +186,13 @@ The sequence of events is as follows.
 2. The `generate_data()` method is called.
 3. The `generate_question()` method is called.
 4. If the `feedback` setting is `False`, the `generate_solutions()` method is called.
-5. The generated data is sent with the settings to the student.
-6. The student answers the question.
-7. If the `feedback` setting is `False`, their answer is verified against the list of solutions.
-8. Otherwise, another object of the question class is instantiated.
-9. Their answer is processed by its `generate_feedback()` method and the explanation is shown to them.
+5. The settings are extracted from the object's attributes.
+6. The generated data is sent with the settings to the student.
+7. The student answers the question.
+8. If the `feedback` setting is `False`, their answer is verified against the list of solutions.
+9. Otherwise, another object of the question class is instantiated.
+Their answer is processed by its `generate_feedback()` method and the explanation is shown to them.
+Any updates to `highlight_nodes` and `highlight_edges` settings are captured.
 
 .. note::
 

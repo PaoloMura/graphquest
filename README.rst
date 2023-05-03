@@ -45,21 +45,21 @@ Here's an example of the GraphQuest package being used to create a new question 
             super().__init__(layout="circle")
 
         def generate_data(self):
-            # Return the list of networkx graphs to be displayed.
+            # Return the networkx graph to be displayed.
             n = random.randint(5, 10)
             G = nx.gnp_random_graph(n, p=0.4)
-            return [G]
+            return G
 
-        def generate_question(self, graphs):
+        def generate_question(self, graph):
             # Return the wording of the question.
             return "Select all vertices with even degree."
 
-        def generate_solutions(self, graphs):
+        def generate_solutions(self, graph):
             # Return a list of all acceptable solutions.
             # Each solution must be a node value.
-            solution = [n for (n, d) in graphs[0].degree if d % 2 == 0]
+            solution = [n for (n, d) in graph.degree if d % 2 == 0]
             return [solution]
 
-        def generate_feedback(self, graphs, answer):
+        def generate_feedback(self, graph, answer):
             # Leave this as a stub function, since we aren't providing detailed feedback.
             return ""

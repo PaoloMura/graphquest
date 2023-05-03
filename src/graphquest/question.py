@@ -159,7 +159,7 @@ class QSelectPath(Question):
         the changes will apply when displaying the feedback.
 
     roots : None | list[int]
-        A list of root nodes corresponding to each graph in `data`.
+        A list of root nodes corresponding to each graph in `graphs`.
 
         For example, if the `generate_data()` method returns two graphs
         and `roots` is `[4, 1]`, then node 4 will be the root of the first graph
@@ -175,8 +175,43 @@ class QSelectPath(Question):
                          node_prefix=node_prefix, label_style=label_style, labels=labels,data=data,
                          highlighted_nodes=highlighted_nodes, highlighted_edges=highlighted_edges, roots=roots)
 
+    def generate_data(self) -> nx.Graph:
+        """Generates a NetworkX graph for the question.
+
+        Returns
+        -------
+        graph : networkx Graph
+            A NetworkX Graph.
+
+        Raises
+        ------
+        NotImplementedError
+            If the method is not implemented
+        """
+        raise NotImplementedError
+
+    def generate_question(self, graph: nx.Graph) -> str:
+        """Generates the wording of the question.
+
+        Parameters
+        ----------
+        graph : networkx Graph
+            The NetworkX graph used in the question.
+
+        Returns
+        -------
+        description : str
+            The question description.
+
+        Raises
+        ------
+        NotImplementedError
+            If the method is not implemented
+        """
+        raise NotImplementedError
+
     @abstractmethod
-    def generate_solutions(self, graphs: list[nx.Graph]) -> list[list[int]]:
+    def generate_solutions(self, graph: nx.Graph) -> list[list[int]]:
         """Generates a list of possible solutions.
 
         Each solution is itself a list of vertices.
@@ -189,9 +224,8 @@ class QSelectPath(Question):
 
         Parameters
         ----------
-        graphs : [networkx Graph]
-            The NetworkX graphs used in the question. They will be
-            labelled in-order as `G1`, `G2`, ...
+        graph : networkx Graph
+            The NetworkX graph used in the question.
 
         Returns
         -------
@@ -213,13 +247,13 @@ class QSelectPath(Question):
         raise NotImplementedError
 
     @abstractmethod
-    def generate_feedback(self, graphs: list[nx.Graph], answer: list[int]) -> (bool, str):
+    def generate_feedback(self, graph: nx.Graph, answer: list[int]) -> (bool, str):
         """Generates a message to be displayed when the solution has been submitted.
 
         Parameters
         ----------
-        graphs: [networkx Graph]
-            The networkx graphs used in the question.
+        graph: networkx Graph
+            The networkx graph used in the question.
 
         answer : [int]
             The student's choice of answer, a list of vertices.
@@ -541,8 +575,43 @@ class QVertexSet(Question):
                          roots=roots)
         self.selection_limit = selection_limit
 
+    def generate_data(self) -> nx.Graph:
+        """Generates a NetworkX graph for the question.
+
+        Returns
+        -------
+        graph : networkx Graph
+            A NetworkX Graph.
+
+        Raises
+        ------
+        NotImplementedError
+            If the method is not implemented
+        """
+        raise NotImplementedError
+
+    def generate_question(self, graph: nx.Graph) -> str:
+        """Generates the wording of the question.
+
+        Parameters
+        ----------
+        graph : networkx Graph
+            The NetworkX graph used in the question.
+
+        Returns
+        -------
+        description : str
+            The question description.
+
+        Raises
+        ------
+        NotImplementedError
+            If the method is not implemented
+        """
+        raise NotImplementedError
+
     @abstractmethod
-    def generate_solutions(self, graphs: list[nx.Graph]) -> list[[int]]:
+    def generate_solutions(self, graph: nx.Graph) -> list[[int]]:
         """Generates a list of possible solutions.
 
         Each solution is itself a list of nodes.
@@ -558,8 +627,8 @@ class QVertexSet(Question):
 
         Parameters
         ----------
-        graphs : [networkx Graph]
-            The NetworkX graphs used in the question.
+        graph : networkx Graph
+            The NetworkX graph used in the question.
 
         Returns
         -------
@@ -575,13 +644,13 @@ class QVertexSet(Question):
         raise NotImplementedError
 
     @abstractmethod
-    def generate_feedback(self, graphs: list[nx.Graph], answer: list[int]) -> (bool, str):
+    def generate_feedback(self, graph: nx.Graph, answer: list[int]) -> (bool, str):
         """Generates a message to be displayed when the solution has been submitted.
 
         Parameters
         ----------
-        graphs : [networkx Graph]
-            The NetworkX graphs used in the question.
+        graph : networkx Graph
+            The NetworkX graph used in the question.
 
         answer : [[int]]
             The student's choice of answer, a list of vertices.
@@ -665,8 +734,43 @@ class QEdgeSet(Question):
                          roots=roots)
         self.selection_limit = selection_limit
 
+    def generate_data(self) -> nx.Graph:
+        """Generates a NetworkX graph for the question.
+
+        Returns
+        -------
+        graph : networkx Graph
+            A NetworkX Graph.
+
+        Raises
+        ------
+        NotImplementedError
+            If the method is not implemented
+        """
+        raise NotImplementedError
+
+    def generate_question(self, graph: nx.Graph) -> str:
+        """Generates the wording of the question.
+
+        Parameters
+        ----------
+        graph : networkx Graph
+            The NetworkX graph used in the question.
+
+        Returns
+        -------
+        description : str
+            The question description.
+
+        Raises
+        ------
+        NotImplementedError
+            If the method is not implemented
+        """
+        raise NotImplementedError
+
     @abstractmethod
-    def generate_solutions(self, graphs: list[nx.Graph]) -> list[list[list[int, int]]]:
+    def generate_solutions(self, graph: nx.Graph) -> list[list[list[int, int]]]:
         """Generates a list of possible solutions.
 
         Each solution is itself a list of edge pairs.
@@ -684,8 +788,8 @@ class QEdgeSet(Question):
 
         Parameters
         ----------
-        graphs : [networkx Graph]
-            The NetworkX graphs used in the question.
+        graph : networkx Graph
+            The NetworkX graph used in the question.
 
         Returns
         -------
@@ -701,13 +805,13 @@ class QEdgeSet(Question):
         raise NotImplementedError
 
     @abstractmethod
-    def generate_feedback(self, graphs: list[nx.Graph], answer: list[list[int, int]]) -> (bool, str):
+    def generate_feedback(self, graph: nx.Graph, answer: list[list[int, int]]) -> (bool, str):
         """Generates a message to be displayed when the solution has been submitted.
 
         Parameters
         ----------
-        graphs : [networkx Graph]
-            The NetworkX graphs used in the question.
+        graph : networkx Graph
+            The NetworkX graph used in the question.
 
         answer : [[int, int]]
             The student's choice of answer, a list of edges.

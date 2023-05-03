@@ -8,3 +8,4 @@ Contents
    Home <self>
    usage
    api
+   examples

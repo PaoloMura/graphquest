@@ -214,9 +214,12 @@ def __validate_question(q):
 
     # Test the generate_data return type
     gs = q.generate_data()
-    assert isinstance(gs, list), 'generate_data() must return a list[networkx.Graph]'
-    for g in gs:
-        assert isinstance(g, nx.Graph), 'generate_data() must return a list[networkx.Graph]'
+    if q_type in ['QTextInput', 'QMultipleChoice']:
+        assert isinstance(gs, list), 'generate_data() must return a list[networkx.Graph]'
+        for g in gs:
+            assert isinstance(g, nx.Graph), 'generate_data() must return a list[networkx.Graph]'
+    else:
+        assert isinstance(gs, nx.Graph), 'generate_data() must return a networkx.Graph'
 
     if verbose:
         print('pass!')
