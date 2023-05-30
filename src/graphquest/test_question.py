@@ -159,21 +159,21 @@ def __make_dummy_answer(q, q_type, gs):
         sols = q.generate_solutions(gs)
         return [[opt, random.choice([True, False])] for opt, _ in sols]
     elif q_type == 'QVertexSet':
-        nodes = list(gs[0].nodes)
+        nodes = list(gs.nodes)
         k = random.randint(0, len(nodes))
         xs = random.sample(nodes, k)
         random.shuffle(xs)
         return xs
     elif q_type == 'QEdgeSet':
-        edges = list(gs[0].edges)
+        edges = list(gs.edges)
         k = random.randint(0, len(edges))
         xs = random.sample(edges, k)
         xs = [list(x) for x in xs]
         random.shuffle(xs)
         return xs
     elif q_type == 'QSelectPath':
-        n = len(gs[0].nodes)
-        return list(nx.generate_random_paths(gs[0], 1, n))[0]
+        n = len(gs.nodes)
+        return list(nx.generate_random_paths(gs, 1, n))[0]
     else:
         assert False, 'Invalid question type'
 
